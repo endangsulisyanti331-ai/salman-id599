@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my-paymentid | Metode Pembayaran</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #ff6b6b;
+            --secondary: #4ecdc4;
+            --accent: #ffd166;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --card-bg: #1e1e1e;
+            --text: #f0f0f0;
+            --text-secondary: #a0a0a0;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            z-index: 1;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .payment-methods {
+            padding: 25px;
+        }
+        
+        .payment-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text);
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .payment-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 3px;
+        }
+        
+        .payment-card {
+            display: flex;
+            align-items: center;
+            background-color: #252525;
+            border-radius: 15px;
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            border: 1px solid #333;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .payment-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary));
+        }
+        
+        .payment-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .payment-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            margin-right: 15px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dana {
+            background: linear-gradient(45deg, #108ee9, #0e76d1);
+        }
+        
+        .gopay {
+            background: linear-gradient(45deg, #00a64f, #008e44);
+        }
+        
+        .ovo {
+            background: linear-gradient(45deg, #4c2a86, #3a1f68);
+        }
+        
+        .qris {
+            background: linear-gradient(45deg, #666, #444);
+        }
+        
+        .payment-info {
+            flex: 1;
+        }
+        
+        .payment-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+        
+        .payment-number {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(45deg, #333, #444);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 15px;
+            font-size: 12px;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .copy-btn:hover {
+            background: linear-gradient(45deg, #444, #555);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+        
+        .copy-btn:disabled {
+            background: #333;
+            color: #666;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .channel-section {
+            background-color: #1a1a1a;
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid #333;
+        }
+        
+        .channel-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+        
+        .channel-btn {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(45deg, #25d366, #128c7e);
+            color: white;
+            text-decoration: none;
+            padding: 14px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(18, 140, 126, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            gap: 8px;
+        }
+        
+        .channel-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(18, 140, 126, 0.4);
+        }
+        
+        .channel-btn i {
+            font-size: 18px;
+        }
+        
+        .footer {
+            padding: 15px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            background-color: #1a1a1a;
+            border-top: 1px solid #333;
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 14px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.4s;
+            z-index: 1000;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .notification.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                border-radius: 15px;
+            }
+            
+            .header {
+                padding: 25px;
+            }
+            
+            .payment-methods {
+                padding: 20px;
+            }
+            
+            .payment-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>my-paymentid</h1>
+                <p>Pilih metode pembayaran yang tersedia</p>
+            </div>
+        </div>
+        
+        <div class="payment-methods">
+            <div class="payment-title">Metode Pembayaran</div>
+            
+            <div class="payment-card pulse">
+                <div class="payment-icon dana">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <div class="payment-info">
+                    <div class="payment-name">DANA</div>
+                    <div class="payment-number">083861426415</div>
+                </div>
+                <button class="copy-btn" data-number="083861426415">
+                    <i class="fas fa-copy"></i> Salin
+                </button>
+            </div>
+            
+            <div class="payment-card">
+                <div class="payment-icon gopay">
+                    <i class="fas fa-money-bill-wave"></i>
+                </div>
+                <div class="payment-info">
+                    <div class="payment-name">GOPAY</div>
+                    <div class="payment-number">083861426415</div>
+                </div>
+                <button class="copy-btn" data-number="083861426415">
+                    <i class="fas fa-copy"></i> Salin
+                </button>
+            </div>
+            
+            <div class="payment-card">
+                <div class="payment-icon ovo">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="payment-info">
+                    <div class="payment-name">OVO</div>
+                    <div class="payment-number">083861426415</div>
+                </div>
+                <button class="copy-btn" data-number="083861426415">
+                    <i class="fas fa-copy"></i> Salin
+                </button>
+            </div>
+            
+            <div class="payment-card">
+                <div class="payment-icon qris">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <div class="payment-info">
+                    <div class="payment-name">QRIS</div>
+                    <div class="payment-number">Segera hadir</div>
+                </div>
+                <button class="copy-btn" disabled>
+                    <i class="fas fa-clock"></i> Nanti
+                </button>
+            </div>
+        </div>
+        
+        <div class="channel-section">
+            <div class="channel-title">Ikuti Channel WhatsApp Kami</div>
+            <a href="https://whatsapp.com/channel/0029Vb6vvsGISTkGsaJVdc2o" target="_blank" class="channel-btn">
+                <i class="fab fa-whatsapp"></i> WhatsApp Channel
+            </a>
+        </div>
+        
+        <div class="footer">
+            &copy; 2023 my-paymentid. Semua hak dilindungi.
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i> Nomor berhasil disalin!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-btn:not(:disabled)');
+            const notification = document.getElementById('notification');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const number = this.getAttribute('data-number');
+                    
+                    // Copy to clipboard
+                    navigator.clipboard.writeText(number).then(() => {
+                        // Show notification
+                        notification.classList.add('show');
+                        
+                        // Hide notification after 2 seconds
+                        setTimeout(() => {
+                            notification.classList.remove('show');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Gagal menyalin: ', err);
+                        notification.innerHTML = '<i class="fas fa-exclamation-circle"></i> Gagal menyalin!';
+                        notification.classList.add('show');
+                        
+                        setTimeout(() => {
+                            notification.classList.remove('show');
+                            notification.innerHTML = '<i class="fas fa-check-circle"></i> Nomor berhasil disalin!';
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
